@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")  
+}
+
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL") 
+// }
+
+
+model Articulo {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  precio      Int?      // En centimos, para evitar números en coma flotante
+  createdAt   DateTime  @default(now()) 
+  updatedAt   DateTime  @updatedAt
+  proveedores Proveedor[]
+
+  @@map("articulos")
+}
+
+model Proveedor {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  nacional    Boolean?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  articulos   Articulo[]
+
+  @@map("proveedores")
+}
